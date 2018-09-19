@@ -1,10 +1,10 @@
 version: 2
 jobs:
-  build:
+  instrumentated_test:
     working_directory: ~/code
     docker:
-      # Android the primary container
-      - image: circleci/android:api-26-alpha
+        # Android the primary container
+        - image: circleci/android:api-26-alpha
     environment:
       JVM_OPTS: -Xmx3200m
     steps:
@@ -18,14 +18,6 @@ jobs:
           paths:
             - ~/.gradle
           key: jars-{{ checksum "build.gradle" }}-{{ checksum  "app/build.gradle" }}
-  instrumentated_test:
-    working_directory: ~/code
-    docker:
-        - image: circleci/android:api-26-alpha
-    environment:
-      JVM_OPTS: -Xmx3200m
-    steps:
-      - checkout
       - run:
           name: Setup emulator
           command: sdkmanager "system-images;android-25;google_apis;armeabi-v7a" && echo "no" | avdmanager create avd -n test -k "system-images;android-25;google_apis;armeabi-v7a"
